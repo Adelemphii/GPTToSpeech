@@ -13,36 +13,42 @@ public class Recorder {
     @Getter
     private long recordTimeMillis = 10000;  // 10 seconds
     private final AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
+    @Getter
     private TargetDataLine line;
 
-    public void start() {
+    @Getter
+    private boolean running;
+
+    public void start(boolean save) {
         try {
             AudioFormat format = getAudioFormat();
             DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
             if(!AudioSystem.isLineSupported(info)) {
                 System.out.println("Line not supported");
-                System.exit(0);
+                System.exit(1);
             }
             line = (TargetDataLine) AudioSystem.getLine(info);
             line.open(format);
             line.start();
 
-            System.out.println("Start capturing...");
-
-            AudioInputStream audioInputStream = new AudioInputStream(line);
-            System.out.println("Start recording...");
-
-            AudioSystem.write(audioInputStream, fileType, file);
+            if(save) {
+                AudioInputStream audioInputStream = new AudioInputStream(line);
+                AudioSystem.write(audioInputStream, fileType, file);
+            }
         } catch (LineUnavailableException | IOException e) {
             e.printStackTrace();
+            System.exit(1);
+            return;
         }
+        running = true;
     }
 
     public void stop() {
         line.stop();
         line.close();
         System.out.println("Finished");
+        running = false;
     }
 
     public AudioFormat getAudioFormat() {
@@ -50,7 +56,7 @@ public class Recorder {
         int sampleSizeInBits = 16;
         int channels = 1;
         boolean signed = true;
-        boolean bigEndian = true;
+        boolean bigEndian = false;
         return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
     }
 

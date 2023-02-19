@@ -1,4 +1,4 @@
-package io.github.adelemphii.utility;
+package io.github.adelemphii.recognition;
 
 import com.google.cloud.texttospeech.v1.*;
 import com.google.protobuf.ByteString;
@@ -13,8 +13,9 @@ public class TextToSpeech {
 
             VoiceSelectionParams voice =
                     VoiceSelectionParams.newBuilder()
+                            .setName("en-AU-Wavenet-B")
                             .setLanguageCode("en-AU")
-                            .setSsmlGender(SsmlVoiceGender.NEUTRAL)
+                            .setSsmlGender(SsmlVoiceGender.MALE)
                             .build();
 
             AudioConfig audioConfig =

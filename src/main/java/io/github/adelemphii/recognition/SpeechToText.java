@@ -1,4 +1,4 @@
-package io.github.adelemphii.utility;
+package io.github.adelemphii.recognition;
 
 import com.google.cloud.speech.v1.*;
 import io.github.adelemphii.objects.Recorder;
@@ -48,6 +48,6 @@ public class SpeechToText {
         });
 
         stopper.start();
-        recorder.start();
+        recorder.start(true);
     }
 }
