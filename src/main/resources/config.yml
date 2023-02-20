@@ -1,0 +1,21 @@
+picoKey: "PICO_KEY"
+openAIKey: "OPENAI_KEY"
+googleCloudStorageKey: "GCS_KEY"
+googleCloudPlatformKey: "GCP_KEY"
+
+# Pico Keyword Path
+picoKeywordPath: "./pico-keyword/listening.ppn"
+inputPath: "./audio/input.wav"
+outputPath: "./audio/output.wav"
+
+# GPT Configuration
+gptLanguage: "en"
+gptTemperature: 0.0
+gptMaxTokens: 100
+# Text to Speech Configuration
+ttsName: "en-AU-Wavenet-A"
+# Google Cloud Storage Configuration
+projectID: "PROJECT_ID" #  // The ID of your GCP project
+bucketName: "BUCKET_NAME" #  // The ID of your GCS bucket
+objectName: "OBJECT_NAME" #  // The ID of your GCS object
+filePath: "./audio/input.wav" #  // The path to your file to upload

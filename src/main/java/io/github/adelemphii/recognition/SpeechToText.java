@@ -3,6 +3,7 @@ package io.github.adelemphii.recognition;
 import com.google.cloud.speech.v1.*;
 import io.github.adelemphii.objects.Recorder;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class SpeechToText {
         return transcription.toString();
     }
 
-    public static void record(long recordTime) {
-        final Recorder recorder = new Recorder();
+    public static void record(long recordTime, File recordFile) {
+        final Recorder recorder = new Recorder(recordFile);
         recorder.setRecordTimeInSeconds(recordTime);
 
         Thread stopper = new Thread(() -> {

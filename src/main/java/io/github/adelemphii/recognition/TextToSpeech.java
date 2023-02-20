@@ -7,7 +7,7 @@ import java.io.*;
 
 public class TextToSpeech {
 
-    public static void speak(String text) {
+    public static void speak(String text, String path) {
         try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
             SynthesisInput input = SynthesisInput.newBuilder().setText(text).build();
 
@@ -28,23 +28,23 @@ public class TextToSpeech {
             ByteString audioContents = response.getAudioContent();
 
             // Write the response to the output file.
-            try (OutputStream out = new FileOutputStream("output.wav")) {
+            try (OutputStream out = new FileOutputStream(path)) {
                 out.write(audioContents.toByteArray());
-                System.out.println("Audio content written to file \"output.mp3\"");
+                System.out.println("Audio content written to file: " + path);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static BufferedInputStream getAudioInputStream() {
+    public static BufferedInputStream getAudioInputStream(String path) {
         try {
-            File file = new File("output.wav");
+            File file = new File(path);
             if(!file.exists()) {
                 // TODO: make some default audio files
                 throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
             }
-            return new BufferedInputStream(new FileInputStream("output.wav"));
+            return new BufferedInputStream(new FileInputStream(path));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

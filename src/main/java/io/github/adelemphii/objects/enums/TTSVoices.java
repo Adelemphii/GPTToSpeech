@@ -34,4 +34,13 @@ public enum TTSVoices {
     public SsmlVoiceGender getGender() {
         return gender;
     }
+
+    public static TTSVoices getVoiceFromName(String name) {
+        for(TTSVoices voice : TTSVoices.values()) {
+            if(voice.getName().equals(name)) {
+                return voice;
+            }
+        }
+        return null;
+    }
 }

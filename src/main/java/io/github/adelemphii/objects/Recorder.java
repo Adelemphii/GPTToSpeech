@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Recorder {
 
-    private final File file = new File("stt.wav");
+    private final File recordingFile;
 
     @Getter
     private long recordTimeMillis = 10000;  // 10 seconds
@@ -18,6 +18,10 @@ public class Recorder {
 
     @Getter
     private boolean running;
+
+    public Recorder(File recordingFile) {
+        this.recordingFile = recordingFile;
+    }
 
     public void start(boolean save) {
         try {
@@ -34,7 +38,7 @@ public class Recorder {
 
             if(save) {
                 AudioInputStream audioInputStream = new AudioInputStream(line);
-                AudioSystem.write(audioInputStream, fileType, file);
+                AudioSystem.write(audioInputStream, fileType, recordingFile);
             }
         } catch (LineUnavailableException | IOException e) {
             e.printStackTrace();

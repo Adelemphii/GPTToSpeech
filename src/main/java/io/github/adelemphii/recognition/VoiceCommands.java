@@ -4,6 +4,9 @@ import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
 import io.github.adelemphii.App;
 import io.github.adelemphii.objects.Recorder;
+import io.github.adelemphii.objects.config.Configuration;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,21 +15,23 @@ import java.nio.ByteOrder;
 
 public class VoiceCommands {
 
-    private static final String API_KEY = System.getenv("PICOVOICE_KEY");
-    private final File customKeyword = new File("listening_en_windows_v2_1_0.ppn");
+    @Getter @Setter
+    private Configuration configuration;
+
 
     private final Porcupine porcupine;
 
     private final Recorder recorder;
 
-    public VoiceCommands() throws PorcupineException, IOException {
+    public VoiceCommands(Configuration configuration) throws PorcupineException, IOException {
+        this.configuration = configuration;
 
         porcupine = new Porcupine.Builder()
-                .setKeywordPath(customKeyword.getAbsolutePath())
-                .setAccessKey(API_KEY)
+                .setKeywordPath(configuration.getPicoKeywordPath())
+                .setAccessKey(configuration.getApiKeys().getPicoKey())
                 .build();
 
-        this.recorder = new Recorder();
+        this.recorder = new Recorder(new File(configuration.getInputPath()));
         recorder.start(false);
         listen();
     }
@@ -59,7 +64,7 @@ public class VoiceCommands {
                 recorder.stop();
 
                 System.out.println("Detected keyword");
-                SpeechToText.record(5);
+                SpeechToText.record(5, new File(configuration.getInputPath()));
                 App.speak();
 
                 try {
