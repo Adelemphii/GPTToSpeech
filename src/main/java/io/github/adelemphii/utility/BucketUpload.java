@@ -20,20 +20,7 @@ public class BucketUpload {
      *
      * @throws IOException if the upload fails
      */
-    public static void uploadObject(
-            String projectId, String bucketName, String objectName, String filePath) throws IOException {
-        // The ID of your GCP project
-        // String projectId = "your-project-id";
-
-        // The ID of your GCS bucket
-        // String bucketName = "your-unique-bucket-name";
-
-        // The ID of your GCS object
-        // String objectName = "your-object-name";
-
-        // The path to your file to upload
-        // String filePath = "path/to/your/file"
-
+    public static void uploadObject(String projectId, String bucketName, String objectName, String filePath) throws IOException {
         Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
         BlobId blobId = BlobId.of(bucketName, objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
@@ -50,9 +37,8 @@ public class BucketUpload {
             // If the destination already exists in your bucket, instead set a generation-match
             // precondition. This will cause the request to fail if the existing object's generation
             // changes before the request runs.
-            precondition =
-                    Storage.BlobWriteOption.generationMatch(
-                            storage.get(bucketName, objectName).getGeneration());
+            precondition = Storage.BlobWriteOption.generationMatch(
+                    storage.get(bucketName, objectName).getGeneration());
         }
         storage.createFrom(blobInfo, Paths.get(filePath), precondition);
 
